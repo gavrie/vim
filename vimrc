@@ -1,6 +1,12 @@
 nmap <silent> ,/ :nohlsearch<CR>
 let mapleader = ","
 
+" Plugins
+let g:LustyExplorerSuppressRubyWarning = 1
+" taglist plugin
+let Tlist_Auto_Open = 1
+let Tlist_File_Fold_Auto_Close = 1
+
 " pathogen
 filetype off 
 call pathogen#helptags()
@@ -73,21 +79,6 @@ if !exists(":DiffOrig")
 		  \ | wincmd p | diffthis
 endif
 
-""""""""""""""""""""""""""""""""""""
-" vim-addon-manager
-"
-"fun! ActivateAddons()
-"  set runtimepath+=~/.vim-addons/vim-addon-manager
-"  try
-"    call scriptmanager#Activate(['pluginA', 'pluginB'])
-"  catch /.*/
-"    echoe v:exception
-"  endtry
-"endf
-"call ActivateAddons()
-"
-"""""""""""""""""""""""""""""""""""
-
 " My settings
 set guifont=Monaco:h16
 set guioptions-=T
@@ -98,12 +89,8 @@ highlight SpecialKey guifg=#808080
 
 " Display "hidden" line number column to get sone space on the left
 set number
-highlight LineNr guifg=#222222
-set numberwidth=10
-
-set softtabstop=4
-set shiftwidth=4
-set expandtab
+highlight LineNr guifg=#555555
+set numberwidth=6
 
 set hidden
 
@@ -116,7 +103,8 @@ set wildignore+=*.o,*.obj,.git,*.pyc
 "highlight SpecialKey guibg=#FF8080
 
 " Allow saving a file with sudo
-cmap w!! %!sudo tee > /dev/null %
+" FIXME: causes "sticky w"
+"cmap w!! %!sudo tee > /dev/null %
 
 " cscope
 if has("cscope")
@@ -142,4 +130,25 @@ if has("cscope")
     nmap <C-_>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 endif
 
-let g:LustyExplorerSuppressRubyWarning = 1
+" omnicomplete with tab
+function! SuperCleverTab()
+    if strpart(getline('.'), 0, col('.') - 1) =~ '^\s*$'
+        return "\<Tab>"
+    else
+        if &omnifunc != ''
+            return "\<C-X>\<C-O>"
+        elseif &dictionary != ''
+            return "\<C-K>"
+        else
+            return "\<C-N>"
+        endif
+    endif
+endfunction
+
+inoremap <Tab> <C-R>=SuperCleverTab()<CR>
+set tags+=~/source/tags.python
+
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+
