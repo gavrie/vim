@@ -1,11 +1,14 @@
-nmap <silent> ,/ :nohlsearch<CR>
 let mapleader = ","
+nmap <silent> ,/ :nohlsearch<CR>
+syntax on
+set hlsearch
 
 " Plugins
 let g:LustyExplorerSuppressRubyWarning = 1
 " taglist plugin
-let Tlist_Auto_Open = 1
+"let Tlist_Auto_Open = 1
 let Tlist_File_Fold_Auto_Close = 1
+let Tlist_Show_One_File=1
 
 " pathogen
 filetype off 
@@ -30,11 +33,33 @@ if has('mouse')
   set mouse=a
 endif
 
+colorscheme vividchalk
+
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
-if &t_Co > 2 || has("gui_running")
-  syntax on
-  set hlsearch
+if has("gui_running")
+
+  " Disable blinking cursor
+  set gcr=a:blinkon0
+
+  " My settings
+  set guifont=Monaco:h16
+  set guioptions-=T
+  
+  set number
+  set numberwidth=6
+  highlight LineNr guifg=#555555
+
+  highlight Comment guifg=#E795E1
+  highlight SpecialKey guifg=#808080
+
+  " Highlight trailing spaces:
+  "set list
+  "set listchars=tab:>-,trail:.,extends:#,nbsp:.
+  "highlight SpecialKey guifg=#FF0000
+  "highlight SpecialKey guibg=#FF8080
+
+  au BufDelete *.git/COMMIT_EDITMSG :silent !open -a Terminal
 endif
 
 " Only do this part when compiled with support for autocommands.
@@ -79,28 +104,9 @@ if !exists(":DiffOrig")
 		  \ | wincmd p | diffthis
 endif
 
-" My settings
-set guifont=Monaco:h16
-set guioptions-=T
-
-colorscheme vividchalk
-highlight Comment guifg=#E795E1
-highlight SpecialKey guifg=#808080
-
-" Display "hidden" line number column to get sone space on the left
-set number
-highlight LineNr guifg=#555555
-set numberwidth=6
-
 set hidden
 
 set wildignore+=*.o,*.obj,.git,*.pyc
-
-" Highlight trailing spaces:
-"set list
-"set listchars=tab:>-,trail:.,extends:#,nbsp:.
-"highlight SpecialKey guifg=#FF0000
-"highlight SpecialKey guibg=#FF8080
 
 " Allow saving a file with sudo
 " FIXME: causes "sticky w"
@@ -152,3 +158,29 @@ set softtabstop=4
 set shiftwidth=4
 set expandtab
 
+" save default session
+"set sessionoptions+=resize,winpos
+"autocmd VIMEnter * :source ~/.vim/sessions/default.vim
+"autocmd VIMLeave * :mksession! ~/.vim/sessions/default.vim
+
+" Configure Windows for 'IDE' state
+function! IDE()
+    "new
+    only
+    NERDTree
+    Tlist
+    " Move NERDTree window to top
+    execute "normal \<C-W>K"
+    " Go to Tlist window and move to bottom
+    execute "normal \<C-W>j\<C-W>J"
+    " Go to main window and move to right
+    execute "normal \<C-W>k\<C-W>L"
+    " Go to Tlist window and make it narrower
+    execute "normal \<C-W>h30\<C-W><"
+    " Return to main window
+    execute "normal \<C-W>l"
+
+    " chdir ~/source/qa/tlib
+    " :cs add cscope.out
+endfunction
+command! IDE :call IDE()
