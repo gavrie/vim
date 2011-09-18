@@ -32,9 +32,10 @@ set textwidth=0
 let g:LustyExplorerSuppressRubyWarning = 1
 
 " pathogen
-filetype off 
-call pathogen#helptags()
-call pathogen#runtime_append_all_bundles()
+"filetype off 
+"call pathogen#helptags()
+"call pathogen#runtime_append_all_bundles()
+call pathogen#infect()
 
 " Settings from VIMRUNTIME/vimrc_example.vim
 set nocompatible
