@@ -1,14 +1,35 @@
+"let g:session_autoload = 0
+"let g:session_autosave = 0
+
+" Tagbar
+let g:tagbar_left = 1
+let g:tagbar_width = 40
+autocmd VimEnter * nested TagbarOpen
+
+" Put VIM swap files in one place
+set directory=~/.vim/swap
+
 let mapleader = ","
-nmap <silent> ,/ :nohlsearch<CR>
+nmap <silent><Leader>/ :nohlsearch<CR>
+nmap <silent><Leader>ve :e ~/.vimrc<CR>
+nmap <silent><Leader>vs :so ~/.vimrc<CR>
+
+nmap <silent><Leader>f <Esc>:Pytest file<CR>
+nmap <silent><Leader>c <Esc>:Pytest class<CR>
+nmap <silent><Leader>m <Esc>:Pytest method<CR>
+
+set showmatch
 syntax on
 set hlsearch
+set nowrap
+set wrapmargin=0
+set textwidth=0
+" To wrap lines at word boundaries:
+" set linebreak
+" set wrap
 
 " Plugins
 let g:LustyExplorerSuppressRubyWarning = 1
-" taglist plugin
-"let Tlist_Auto_Open = 1
-let Tlist_File_Fold_Auto_Close = 1
-let Tlist_Show_One_File=1
 
 " pathogen
 filetype off 
@@ -43,14 +64,20 @@ if has("gui_running")
   set gcr=a:blinkon0
 
   " My settings
-  set guifont=Monaco:h16
-  set guioptions-=T
+  set guifont=Monaco:h18
+  " No scrollbar or toolbar
+  set guioptions=aAce
+  " Make window as large as possible
+  set columns=300
+  set lines=60
   
   set number
-  set numberwidth=6
-  highlight LineNr guifg=#555555
+  "set numberwidth=6
 
+  " My customizations to vividchalk
   highlight Comment guifg=#E795E1
+  highlight LineNr guifg=#555555 guibg=#000000
+
   highlight SpecialKey guifg=#808080
 
   " Highlight trailing spaces:
@@ -59,8 +86,14 @@ if has("gui_running")
   "highlight SpecialKey guifg=#FF0000
   "highlight SpecialKey guibg=#FF8080
 
-  au BufDelete *.git/COMMIT_EDITMSG :silent !open -a Terminal
+  " Bring terminal to foreground after writing commit message (not used with fugitive!)
+  "au BufDelete *.git/COMMIT_EDITMSG :silent !open -a Terminal
+  set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+  set rulerformat=
 endif
+
+" Always show status line
+"set laststatus=2
 
 " Only do this part when compiled with support for autocommands.
 if has("autocmd")
@@ -152,35 +185,38 @@ function! SuperCleverTab()
 endfunction
 
 inoremap <Tab> <C-R>=SuperCleverTab()<CR>
-set tags+=~/source/tags.python
+
+set tags+=~/.vim/tags/python.ctags
 
 set softtabstop=4
 set shiftwidth=4
 set expandtab
+set numberwidth=6
 
 " save default session
 "set sessionoptions+=resize,winpos
 "autocmd VIMEnter * :source ~/.vim/sessions/default.vim
 "autocmd VIMLeave * :mksession! ~/.vim/sessions/default.vim
 
-" Configure Windows for 'IDE' state
-function! IDE()
-    "new
-    only
-    NERDTree
-    Tlist
-    " Move NERDTree window to top
-    execute "normal \<C-W>K"
-    " Go to Tlist window and move to bottom
-    execute "normal \<C-W>j\<C-W>J"
-    " Go to main window and move to right
-    execute "normal \<C-W>k\<C-W>L"
-    " Go to Tlist window and make it narrower
-    execute "normal \<C-W>h30\<C-W><"
-    " Return to main window
-    execute "normal \<C-W>l"
+" Disable arrows!
+nnoremap <up> <nop>
+nnoremap <down> <nop>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+inoremap <up> <nop>
+inoremap <down> <nop>
+inoremap <left> <nop>
+inoremap <right> <nop>
 
-    " chdir ~/source/qa/tlib
-    " :cs add cscope.out
-endfunction
-command! IDE :call IDE()
+
+" Make `gf` work on import statements from python stdlib
+" source: http://sontek.net/python-with-a-modular-ide-vim
+python << EOF
+import os
+import sys
+import vim
+for p in sys.path:
+    if os.path.isdir(p):
+        vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
+EOF
+
