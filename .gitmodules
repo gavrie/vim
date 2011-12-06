@@ -40,3 +40,27 @@
 [submodule "bundle/gundo"]
 	path = bundle/gundo
 	url = http://github.com/sjl/gundo.vim.git
+[submodule "bundle/vim-pathogen"]
+	path = bundle/vim-pathogen
+	url = git://github.com/tpope/vim-pathogen.git
+[submodule "bundle/bufkill"]
+	path = bundle/bufkill
+	url = git://github.com/vim-scripts/bufkill.vim.git
+[submodule "bundle/confluencewiki"]
+	path = bundle/confluencewiki
+	url = https://github.com/vim-scripts/confluencewiki.vim.git
+[submodule "bundle/csapprox"]
+	path = bundle/csapprox
+	url = https://github.com/godlygeek/csapprox.git
+[submodule "bundle/vim-surround"]
+	path = bundle/vim-surround
+	url = git://github.com/tpope/vim-surround.git
+[submodule "bundle/vim-repeat"]
+	path = bundle/vim-repeat
+	url = git://github.com/tpope/vim-repeat.git
+[submodule "bundle/vim-speeddating"]
+	path = bundle/vim-speeddating
+	url = git://github.com/tpope/vim-speeddating.git
+[submodule "bundle/tcomment"]
+	path = bundle/tcomment
+	url = git://github.com/tomtom/tcomment_vim.git
