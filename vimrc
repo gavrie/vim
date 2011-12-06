@@ -1,3 +1,7 @@
+" pathogen
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+call pathogen#infect()
+
 "let g:session_autoload = 0
 "let g:session_autosave = 0
 
@@ -18,6 +22,8 @@ nmap <silent><Leader>f <Esc>:Pytest file<CR>
 nmap <silent><Leader>c <Esc>:Pytest class<CR>
 nmap <silent><Leader>m <Esc>:Pytest method<CR>
 
+nmap <silent><Leader>gu :GundoToggle<CR>
+
 set showmatch
 syntax on
 set hlsearch
@@ -30,12 +36,6 @@ set textwidth=0
 
 " Plugins
 let g:LustyExplorerSuppressRubyWarning = 1
-
-" pathogen
-"filetype off 
-"call pathogen#helptags()
-"call pathogen#runtime_append_all_bundles()
-call pathogen#infect()
 
 " Settings from VIMRUNTIME/vimrc_example.vim
 set nocompatible
@@ -209,6 +209,8 @@ inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
+" tcomment
+let g:tcommentMapLeader1 = ''
 
 " Make `gf` work on import statements from python stdlib
 " source: http://sontek.net/python-with-a-modular-ide-vim
