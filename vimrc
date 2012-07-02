@@ -5,11 +5,6 @@ call pathogen#infect()
 "let g:session_autoload = 0
 "let g:session_autosave = 0
 
-" Tagbar
-let g:tagbar_left = 1
-let g:tagbar_width = 40
-autocmd VimEnter * nested TagbarOpen
-
 " Put VIM swap files in one place
 set directory=~/.vim/swap
 
@@ -18,9 +13,10 @@ nmap <silent><Leader>/ :nohlsearch<CR>
 nmap <silent><Leader>ve :e ~/.vimrc<CR>
 nmap <silent><Leader>vs :so ~/.vimrc<CR>
 
-nmap <silent><Leader>f <Esc>:Pytest file<CR>
-nmap <silent><Leader>c <Esc>:Pytest class<CR>
-nmap <silent><Leader>m <Esc>:Pytest method<CR>
+" run py.test on current file sending output to quickfix window
+noremap <Leader>p :update<CR>:cexpr system('py.test --tb=short '.expand('%:p'))<CR>:cwindow<CR>
+" run py.test on current file sending output to quickfix window
+"noremap <C-F5> :update<CR>:cexpr system(expand('%:p'))<CR>:copen<CR>
 
 nmap <silent><Leader>gu :GundoToggle<CR>
 
@@ -75,6 +71,11 @@ if has("gui_running")
   set number
   "set numberwidth=6
 
+  " Tagbar
+  let g:tagbar_left = 1
+  let g:tagbar_width = 40
+  autocmd VimEnter * nested TagbarOpen
+
   " My customizations to vividchalk
   highlight Comment guifg=#E795E1
   highlight LineNr guifg=#555555 guibg=#000000
@@ -89,7 +90,7 @@ if has("gui_running")
 
   " Bring terminal to foreground after writing commit message (not used with fugitive!)
   "au BufDelete *.git/COMMIT_EDITMSG :silent !open -a Terminal
-  set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=%-14.(%l,%c%V%)\ %P
+  set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=[%{getcwd()}]%-14.(\ %l,%c%V%)\ %P
   set rulerformat=
 endif
 
@@ -121,6 +122,8 @@ if has("autocmd")
     \ if line("'\"") > 1 && line("'\"") <= line("$") |
     \   exe "normal! g`\"" |
     \ endif
+
+  autocmd VimResized set columns=300
 
   augroup END
 
@@ -170,23 +173,23 @@ if has("cscope")
     nmap <C-_>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 endif
 
-" omnicomplete with tab
-function! SuperCleverTab()
-    if strpart(getline('.'), 0, col('.') - 1) =~ '^\s*$'
-        return "\<Tab>"
-    else
-        if &omnifunc != ''
-            return "\<C-X>\<C-O>"
-        elseif &dictionary != ''
-            return "\<C-K>"
-        else
-            return "\<C-N>"
-        endif
-    endif
-endfunction
-
-inoremap <Tab> <C-R>=SuperCleverTab()<CR>
-
+"" omnicomplete with tab
+"function! SuperCleverTab()
+"    if strpart(getline('.'), 0, col('.') - 1) =~ '^\s*$'
+"        return "\<Tab>"
+"    else
+"        if &omnifunc != ''
+"            return "\<C-X>\<C-O>"
+"        elseif &dictionary != ''
+"            return "\<C-K>"
+"        else
+"            return "\<C-N>"
+"        endif
+"    endif
+"endfunction
+"
+"inoremap <Tab> <C-R>=SuperCleverTab()<CR>
+"
 set tags+=~/.vim/tags/python.ctags
 
 set softtabstop=4
