@@ -37,10 +37,10 @@ let g:LustyExplorerSuppressRubyWarning = 1
 set nocompatible
 set backspace=indent,eol,start
 
-set history=50		" keep 50 lines of command line history
-set ruler		" show the cursor position all the time
-set showcmd		" display incomplete commands
-set incsearch		" do incremental searching
+set history=50 " keep 50 lines of command line history
+set ruler      " show the cursor position all the time
+set showcmd    " display incomplete commands
+set incsearch  " do incremental searching
 
 " CTRL-U in insert mode deletes a lot.  Use CTRL-G u to first break undo,
 " so that you can undo CTRL-U after inserting a line break.
@@ -67,7 +67,7 @@ if has("gui_running")
   " Make window as large as possible
   set columns=300
   set lines=60
-  
+
   set number
   "set numberwidth=6
 
@@ -75,6 +75,7 @@ if has("gui_running")
   let g:tagbar_left = 1
   let g:tagbar_width = 40
   autocmd VimEnter * nested TagbarOpen
+  nmap <F2> :TagbarToggle<CR>
 
   " My customizations to vividchalk
   highlight Comment guifg=#E795E1
@@ -82,16 +83,19 @@ if has("gui_running")
 
   highlight SpecialKey guifg=#808080
 
-  " Highlight trailing spaces:
-  "set list
-  "set listchars=tab:>-,trail:.,extends:#,nbsp:.
-  "highlight SpecialKey guifg=#FF0000
-  "highlight SpecialKey guibg=#FF8080
+  " Highlight trailing spaces:   
+  " Highlight tabs:	
+  set list
+  set listchars=tab:>-,trail:.,extends:>,precedes:<,nbsp:.
+  highlight SpecialKey guifg=#FFFFFF
+  highlight SpecialKey guibg=#BB0000
 
   " Bring terminal to foreground after writing commit message (not used with fugitive!)
   "au BufDelete *.git/COMMIT_EDITMSG :silent !open -a Terminal
   set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=[%{getcwd()}]%-14.(\ %l,%c%V%)\ %P
   set rulerformat=
+
+  set fullscreen
 endif
 
 " Always show status line
@@ -105,6 +109,7 @@ if has("autocmd")
   " 'cindent' is on in C files, etc.
   " Also load indent files, to automatically do language-dependent indenting.
   filetype plugin indent on
+  filetype plugin on
 
   " Put these in an autocmd group, so that we can delete them easily.
   augroup vimrcEx
@@ -129,16 +134,22 @@ if has("autocmd")
 
 else
 
-  set autoindent		" always set autoindenting on
+  set autoindent " always set autoindenting on
 
 endif " has("autocmd")
+
+" Hacks
+nmap <F3> :set columns=300<CR>
+nmap <Leader>p :set ft=python<CR>
+"set foldmethod=indent
+"set foldignore=
 
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
 " Only define it when not defined already.
 if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
-		  \ | wincmd p | diffthis
+  \ | wincmd p | diffthis
 endif
 
 set hidden
@@ -194,6 +205,7 @@ set tags+=~/.vim/tags/python.ctags
 
 set softtabstop=4
 set shiftwidth=4
+set tabstop=4
 set expandtab
 set numberwidth=6
 
@@ -212,8 +224,31 @@ inoremap <down> <nop>
 inoremap <left> <nop>
 inoremap <right> <nop>
 
+" jj maps to escape
+inoremap jj <Esc>
+
+"" Relative line numbers
+" function! NumberToggle()
+"   if(&relativenumber == 1)
+"     set number
+"   else
+"     set relativenumber
+"   endif
+" endfunc
+
+" nnoremap <C-n> :call NumberToggle()<cr>
+" :au FocusLost * :set number
+" :au FocusGained * :set relativenumber
+" :au BufEnter * :set relativenumber
+
+" Underscore is not part of word
+"set iskeyword-=_
+
 " tcomment
 let g:tcommentMapLeader1 = ''
+
+" NERDComment
+let NERDSpaceDelims = 1
 
 " Make `gf` work on import statements from python stdlib
 " source: http://sontek.net/python-with-a-modular-ide-vim
@@ -226,3 +261,8 @@ for p in sys.path:
         vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
 EOF
 
+set clipboard=unnamed
+
+" Hebrew support
+":set keymap=hebrew_utf-8
+":set invrighleft
