@@ -184,23 +184,6 @@ if has("cscope")
     nmap <C-_>i :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>
 endif
 
-"" omnicomplete with tab
-"function! SuperCleverTab()
-"    if strpart(getline('.'), 0, col('.') - 1) =~ '^\s*$'
-"        return "\<Tab>"
-"    else
-"        if &omnifunc != ''
-"            return "\<C-X>\<C-O>"
-"        elseif &dictionary != ''
-"            return "\<C-K>"
-"        else
-"            return "\<C-N>"
-"        endif
-"    endif
-"endfunction
-"
-"inoremap <Tab> <C-R>=SuperCleverTab()<CR>
-"
 set tags+=~/.vim/tags/python.ctags
 
 set softtabstop=4
@@ -244,9 +227,6 @@ inoremap jj <Esc>
 " Underscore is not part of word
 "set iskeyword-=_
 
-" tcomment
-let g:tcommentMapLeader1 = ''
-
 " NERDComment
 let NERDSpaceDelims = 1
 
@@ -266,3 +246,7 @@ set clipboard=unnamed
 " Hebrew support
 ":set keymap=hebrew_utf-8
 ":set invrighleft
+
+" jedi
+let g:jedi#use_tabs_not_buffers = 0
+let g:jedi#popup_on_dot = 0
