@@ -1,6 +1,33 @@
-" pathogen
-runtime bundle/vim-pathogen/autoload/pathogen.vim
-call pathogen#infect()
+set nocompatible
+
+""""""""""""""""""""""""""""""""""""""""""""""""""
+" Vundle
+filetype off
+set runtimepath+=~/.vim/bundle/vundle
+call vundle#rc()
+
+Bundle 'gmarik/vundle'
+Bundle 'vim-scripts/bufkill.vim.git'
+Bundle 'vim-scripts/camelcasemotion.git'
+Bundle 'sjl/gundo.vim.git'
+Bundle 'davidhalter/jedi-vim.git'
+" Bundle 'sjbach/lusty.git'
+Bundle 'scrooloose/nerdcommenter.git'
+Bundle 'kevinw/pyflakes-vim.git'
+Bundle 'ervandew/supertab.git'
+Bundle 'godlygeek/tabular.git'
+Bundle 'majutsushi/tagbar'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'tpope/vim-fugitive.git'
+Bundle 'michaeljsmith/vim-indent-object.git'
+Bundle 'tpope/vim-repeat.git'
+Bundle 'tpope/vim-speeddating.git'
+Bundle 'tpope/vim-surround.git'
+Bundle 'gavrie/vim-vividchalk.git'
+Bundle 'kien/ctrlp.vim'
+" Bundle 'bling/vim-airline'
+" Bundle 'Lokaltog/powerline'
+""""""""""""""""""""""""""""""""""""""""""""""""""
 
 "let g:session_autoload = 0
 "let g:session_autosave = 0
@@ -34,7 +61,6 @@ set textwidth=0
 let g:LustyExplorerSuppressRubyWarning = 1
 
 " Settings from VIMRUNTIME/vimrc_example.vim
-set nocompatible
 set backspace=indent,eol,start
 
 set history=50 " keep 50 lines of command line history
@@ -90,10 +116,8 @@ if has("gui_running")
   highlight SpecialKey guifg=#FFFFFF
   highlight SpecialKey guibg=#BB0000
 
-  " Bring terminal to foreground after writing commit message (not used with fugitive!)
-  "au BufDelete *.git/COMMIT_EDITMSG :silent !open -a Terminal
-  set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=[%{getcwd()}]%-14.(\ %l,%c%V%)\ %P
-  set rulerformat=
+  " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=[%{getcwd()}]%-14.(\ %l,%c%V%)\ %P
+  " set rulerformat=
 
   set fullscreen
 endif
