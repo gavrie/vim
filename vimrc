@@ -25,6 +25,7 @@ Bundle 'tpope/vim-speeddating.git'
 Bundle 'tpope/vim-surround.git'
 Bundle 'gavrie/vim-vividchalk.git'
 Bundle 'kien/ctrlp.vim'
+Bundle 'fatih/vim-go'
 " Bundle 'bling/vim-airline'
 " Bundle 'Lokaltog/powerline'
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -100,6 +101,35 @@ if has("gui_running")
   " Tagbar
   let g:tagbar_left = 1
   let g:tagbar_width = 40
+
+  let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+\ }
+
   autocmd VimEnter * nested TagbarOpen
   nmap <F2> :TagbarToggle<CR>
 
@@ -111,10 +141,12 @@ if has("gui_running")
 
   " Highlight trailing spaces:   
   " Highlight tabs:	
-  set list
   set listchars=tab:>-,trail:.,extends:>,precedes:<,nbsp:.
-  highlight SpecialKey guifg=#FFFFFF
-  highlight SpecialKey guibg=#BB0000
+
+  " Those were disabled for golang -- consider making these filetype specific:
+  "set list
+  "highlight SpecialKey guifg=#FFFFFF
+  "highlight SpecialKey guibg=#BB0000
 
   " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=[%{getcwd()}]%-14.(\ %l,%c%V%)\ %P
   " set rulerformat=
