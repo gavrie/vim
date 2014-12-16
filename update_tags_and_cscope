@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Use the correct ctags
+PATH=/usr/local/bin:$PATH
+
+cd ~/source/qa/tlib
+ctags -R --exclude=docs/build . ../tests
+find . -name '*.py' | egrep -v "^(./docs/build|./ut|./deps/iotool/(scons|xiv))" > pycscope.files
+find ../tests -name '*.py' >> pycscope.files
+pycscope.py -R -i pycscope.files 
