@@ -3,10 +3,10 @@ set nocompatible
 """"""""""""""""""""""""""""""""""""""""""""""""""
 " Vundle
 filetype off
-set runtimepath+=~/.vim/bundle/vundle
-call vundle#rc()
+set runtimepath+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
-Bundle 'gmarik/vundle'
+Bundle 'gmarik/Vundle.vim'
 Bundle 'vim-scripts/bufkill.vim.git'
 Bundle 'vim-scripts/camelcasemotion.git'
 Bundle 'sjl/gundo.vim.git'
@@ -28,6 +28,8 @@ Bundle 'kien/ctrlp.vim'
 Bundle 'fatih/vim-go'
 " Bundle 'bling/vim-airline'
 " Bundle 'Lokaltog/powerline'
+
+call vundle#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""
 
 "let g:session_autoload = 0
@@ -309,3 +311,11 @@ let g:jedi#popup_on_dot = 0
 
 " supertab
 let g:SuperTabDefaultCompletionType = "<C-X><C-O>"
+
+" markdown
+au BufRead,BufNewFile *.md set filetype=markdown
+au FileType markdown setlocal lbr
+au FileType markdown setlocal wrap
+
+" vim-go
+let g:go_fmt_command = "goimports"
