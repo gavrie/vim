@@ -10,12 +10,11 @@ Bundle 'gmarik/Vundle.vim'
 Bundle 'vim-scripts/bufkill.vim.git'
 Bundle 'vim-scripts/camelcasemotion.git'
 Bundle 'sjl/gundo.vim.git'
-Bundle 'davidhalter/jedi-vim.git'
 " Bundle 'sjbach/lusty.git'
 Bundle 'scrooloose/nerdcommenter.git'
 Bundle 'kevinw/pyflakes-vim.git'
 Bundle 'ervandew/supertab.git'
-Bundle 'godlygeek/tabular.git'
+" Bundle 'godlygeek/tabular.git'
 Bundle 'majutsushi/tagbar'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'tpope/vim-fugitive.git'
@@ -26,8 +25,7 @@ Bundle 'tpope/vim-surround.git'
 Bundle 'gavrie/vim-vividchalk.git'
 Bundle 'kien/ctrlp.vim'
 Bundle 'fatih/vim-go'
-" Bundle 'bling/vim-airline'
-" Bundle 'Lokaltog/powerline'
+" Bundle 'Valloric/YouCompleteMe'
 
 call vundle#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -102,7 +100,7 @@ if has("gui_running")
 
   " Tagbar
   let g:tagbar_left = 1
-  let g:tagbar_width = 40
+  let g:tagbar_width = 30
 
   let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
@@ -319,3 +317,25 @@ au FileType markdown setlocal wrap
 
 " vim-go
 let g:go_fmt_command = "goimports"
+
+" let g:go_highlight_functions = 1
+" let g:go_highlight_methods = 1
+" let g:go_highlight_structs = 1
+
+au FileType go nmap <Leader>s <Plug>(go-implements)
+au FileType go nmap <Leader>i <Plug>(go-info)
+
+au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
+
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>c <Plug>(go-coverage)
+
+au FileType go nmap <Leader>ds <Plug>(go-def-split)
+au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+" au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+
+au FileType go nmap <Leader>e <Plug>(go-rename)
