@@ -6,26 +6,33 @@ filetype off
 set runtimepath+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
-Bundle 'gmarik/Vundle.vim'
-Bundle 'vim-scripts/bufkill.vim.git'
-Bundle 'vim-scripts/camelcasemotion.git'
-Bundle 'sjl/gundo.vim.git'
-" Bundle 'sjbach/lusty.git'
-Bundle 'scrooloose/nerdcommenter.git'
-Bundle 'kevinw/pyflakes-vim.git'
-Bundle 'ervandew/supertab.git'
-" Bundle 'godlygeek/tabular.git'
-Bundle 'majutsushi/tagbar'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'tpope/vim-fugitive.git'
-Bundle 'michaeljsmith/vim-indent-object.git'
-Bundle 'tpope/vim-repeat.git'
-Bundle 'tpope/vim-speeddating.git'
-Bundle 'tpope/vim-surround.git'
-Bundle 'gavrie/vim-vividchalk.git'
-Bundle 'kien/ctrlp.vim'
-Bundle 'fatih/vim-go'
-" Bundle 'Valloric/YouCompleteMe'
+Plugin 'gmarik/Vundle.vim'
+Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'sukima/xmledit'
+Plugin 'fatih/vim-go'
+Plugin 'vim-scripts/bufkill.vim.git'
+Plugin 'vim-scripts/camelcasemotion.git'
+Plugin 'sjl/gundo.vim.git'
+" Plugin 'sjbach/lusty.git'
+Plugin 'scrooloose/nerdcommenter.git'
+Plugin 'kevinw/pyflakes-vim.git'
+Plugin 'ervandew/supertab.git'
+" Plugin 'godlygeek/tabular.git'
+Plugin 'majutsushi/tagbar'
+Plugin 'Lokaltog/vim-easymotion'
+Plugin 'michaeljsmith/vim-indent-object.git'
+Plugin 'tpope/vim-fugitive.git'
+Plugin 'tpope/vim-speeddating.git'
+Plugin 'tpope/vim-surround.git'
+Plugin 'tpope/vim-repeat.git'
+Plugin 'tpope/vim-abolish.git'
+Plugin 'tpope/vim-unimpaired'
+Plugin 'gavrie/vim-vividchalk.git'
+Plugin 'kien/ctrlp.vim'
+Plugin 'vim-scripts/Cpp11-Syntax-Support.git'
+" Plugin 'Valloric/YouCompleteMe'
+Plugin 'cespare/vim-toml'
+Plugin 'PProvost/vim-ps1'
 
 call vundle#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -34,12 +41,17 @@ call vundle#end()
 "let g:session_autosave = 0
 
 " Put VIM swap files in one place
-set directory=~/.vim/swap
+" set directory=~/.vim/swap
+" Don't create swap files:
+set updatecount=0
 
 let mapleader = ","
 nmap <silent><Leader>/ :nohlsearch<CR>
 nmap <silent><Leader>ve :e ~/.vimrc<CR>
 nmap <silent><Leader>vs :so ~/.vimrc<CR>
+
+" Go to directory of current file (useful for Go build)
+nnoremap ,cd :cd %:p:h<CR>:pwd<CR>
 
 " run py.test on current file sending output to quickfix window
 noremap <Leader>p :update<CR>:cexpr system('py.test --tb=short '.expand('%:p'))<CR>:cwindow<CR>
@@ -84,11 +96,14 @@ colorscheme vividchalk
 " Also switch on highlighting the last used search pattern.
 if has("gui_running")
 
+  " autocmd! GUIEnter * set vb t_vb=
+  set visualbell t_vb=
+
   " Disable blinking cursor
   set gcr=a:blinkon0
 
   " My settings
-  set guifont=Monaco:h18
+  set guifont=Monaco:h14
   " No scrollbar or toolbar
   set guioptions=aAce
   " Make window as large as possible
@@ -100,7 +115,7 @@ if has("gui_running")
 
   " Tagbar
   let g:tagbar_left = 1
-  let g:tagbar_width = 30
+  let g:tagbar_width = 40
 
   let g:tagbar_type_go = {
     \ 'ctagstype' : 'go',
@@ -131,7 +146,7 @@ if has("gui_running")
 \ }
 
   autocmd VimEnter * nested TagbarOpen
-  nmap <F2> :TagbarToggle<CR>
+  nmap <F2> :wincmd o<CR>:TagbarOpen<CR>
 
   " My customizations to vividchalk
   highlight Comment guifg=#E795E1
@@ -150,6 +165,8 @@ if has("gui_running")
 
   " set statusline=%<%f\ %h%m%r%{fugitive#statusline()}%=[%{getcwd()}]%-14.(\ %l,%c%V%)\ %P
   " set rulerformat=
+
+  autocmd QuickFixCmdPost *grep* cwindow
 
   set fullscreen
 endif
@@ -297,6 +314,8 @@ for p in sys.path:
         vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
 EOF
 
+set path+=/Users/gavriep/source/go/src
+
 set clipboard=unnamed
 
 " Hebrew support
@@ -315,12 +334,15 @@ au BufRead,BufNewFile *.md set filetype=markdown
 au FileType markdown setlocal lbr
 au FileType markdown setlocal wrap
 
+au BufRead,BufNewFile *.t set filetype=sh
+
+" toml
+" au BufRead,BufNewFile *.toml set filetype=dosini
+
 " vim-go
 let g:go_fmt_command = "goimports"
-
-" let g:go_highlight_functions = 1
-" let g:go_highlight_methods = 1
-" let g:go_highlight_structs = 1
+let g:go_oracle_scope = "github.com/elastifile/tesla"
+" let g:go_autodetect_gopath = 0
 
 au FileType go nmap <Leader>s <Plug>(go-implements)
 au FileType go nmap <Leader>i <Plug>(go-info)
@@ -329,9 +351,10 @@ au FileType go nmap <Leader>gd <Plug>(go-doc)
 au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
 au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
 
-au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>r <Plug>(go-referrers)
 au FileType go nmap <leader>b <Plug>(go-build)
-au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>t <Plug>(go-test-compile)
+" au FileType go nmap <leader>t :call go#cmd#Test('-c')<CR>
 au FileType go nmap <leader>c <Plug>(go-coverage)
 
 au FileType go nmap <Leader>ds <Plug>(go-def-split)
