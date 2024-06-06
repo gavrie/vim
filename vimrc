@@ -7,19 +7,21 @@ set runtimepath+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'gmarik/Vundle.vim'
-Plugin 'ekalinin/Dockerfile.vim'
-Plugin 'sukima/xmledit'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'rust-lang/rust.vim'
+Plugin 'racer-rust/vim-racer'
 Plugin 'fatih/vim-go'
 Plugin 'vim-scripts/bufkill.vim.git'
 Plugin 'vim-scripts/camelcasemotion.git'
 Plugin 'sjl/gundo.vim.git'
 " Plugin 'sjbach/lusty.git'
 Plugin 'scrooloose/nerdcommenter.git'
-Plugin 'kevinw/pyflakes-vim.git'
+"Plugin 'kevinw/pyflakes-vim.git'
 Plugin 'ervandew/supertab.git'
 " Plugin 'godlygeek/tabular.git'
 Plugin 'majutsushi/tagbar'
 Plugin 'Lokaltog/vim-easymotion'
+
 Plugin 'michaeljsmith/vim-indent-object.git'
 Plugin 'tpope/vim-fugitive.git'
 Plugin 'tpope/vim-speeddating.git'
@@ -27,12 +29,14 @@ Plugin 'tpope/vim-surround.git'
 Plugin 'tpope/vim-repeat.git'
 Plugin 'tpope/vim-abolish.git'
 Plugin 'tpope/vim-unimpaired'
-Plugin 'gavrie/vim-vividchalk.git'
+
+" Consider replacing with fzf:
 Plugin 'kien/ctrlp.vim'
-Plugin 'vim-scripts/Cpp11-Syntax-Support.git'
-" Plugin 'Valloric/YouCompleteMe'
+
 Plugin 'cespare/vim-toml'
-Plugin 'PProvost/vim-ps1'
+Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'sukima/xmledit'
+Plugin 'gavrie/vim-vividchalk.git'
 
 call vundle#end()
 """"""""""""""""""""""""""""""""""""""""""""""""""
@@ -63,7 +67,7 @@ nmap <silent><Leader>gu :GundoToggle<CR>
 set showmatch
 syntax on
 set hlsearch
-set nowrap
+set wrap
 set wrapmargin=0
 set textwidth=0
 " To wrap lines at word boundaries:
@@ -92,8 +96,11 @@ endif
 
 colorscheme vividchalk
 
+set number
+
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
+" if has("autocmd")
 if has("gui_running")
 
   " autocmd! GUIEnter * set vb t_vb=
@@ -110,7 +117,7 @@ if has("gui_running")
   set columns=300
   set lines=60
 
-  set number
+  "set number
   "set numberwidth=6
 
   " Tagbar
@@ -190,6 +197,9 @@ if has("autocmd")
 
   " For all text files set 'textwidth' to 78 characters.
   autocmd FileType text setlocal textwidth=78
+
+  " YAML
+  autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
 
   " When editing a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
@@ -271,14 +281,14 @@ set numberwidth=6
 "autocmd VIMLeave * :mksession! ~/.vim/sessions/default.vim
 
 " Disable arrows!
-nnoremap <up> <nop>
-nnoremap <down> <nop>
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-inoremap <up> <nop>
-inoremap <down> <nop>
-inoremap <left> <nop>
-inoremap <right> <nop>
+"nnoremap <up> <nop>
+"nnoremap <down> <nop>
+"nnoremap <left> <nop>
+"nnoremap <right> <nop>
+"inoremap <up> <nop>
+"inoremap <down> <nop>
+"inoremap <left> <nop>
+"inoremap <right> <nop>
 
 " jj maps to escape
 inoremap jj <Esc>
@@ -303,18 +313,18 @@ inoremap jj <Esc>
 " NERDComment
 let NERDSpaceDelims = 1
 
-" Make `gf` work on import statements from python stdlib
-" source: http://sontek.net/python-with-a-modular-ide-vim
-python << EOF
-import os
-import sys
-import vim
-for p in sys.path:
-    if os.path.isdir(p):
-        vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
-EOF
+"" Make `gf` work on import statements from python stdlib
+"" source: http://sontek.net/python-with-a-modular-ide-vim
+"python << EOF
+"import os
+"import sys
+"import vim
+"for p in sys.path:
+"    if os.path.isdir(p):
+"        vim.command(r"set path+=%s" % (p.replace(" ", r"\ ")))
+"EOF
 
-set path+=/Users/gavriep/source/go/src
+"set path+=/Users/gavriep/source/go/src
 
 set clipboard=unnamed
 
@@ -335,6 +345,8 @@ au FileType markdown setlocal lbr
 au FileType markdown setlocal wrap
 
 au BufRead,BufNewFile *.t set filetype=sh
+
+au BufRead,BufNewFile *Vagrantfile* set filetype=ruby
 
 " toml
 " au BufRead,BufNewFile *.toml set filetype=dosini
